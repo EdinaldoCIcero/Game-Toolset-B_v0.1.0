@@ -1,0 +1,13 @@
+{
+
+    "button_start"      : [ "button_start_def.png" , "button_start_over.png" ],
+
+    "button_load_game"  : [ "button_start_def.png" , "button_start_over.png" ],
+
+    "button_opisões"    : [ "button_start_def.png" , "button_start_over.png" ],
+
+    "button_sair"       : [ "button_start_def.png" , "button_start_over.png" ],
+
+    "button_start"      : [ "button_start_def.png" , "button_start_over.png" ]
+
+}
