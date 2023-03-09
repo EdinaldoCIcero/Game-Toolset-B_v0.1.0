@@ -3,13 +3,19 @@ from mathutils import Vector
 import bge 
 
 #-----------------------------------------------------------------------------------------
+from scripts.a_globals_libs.EventsKeys import EventeKeysValues
 
+
+#-----------------------------------------------------------------------------------------
 
 
 #-----------------------------------------------------------------------------------------
 class PlayerController(types.KX_GameObject):
     def __init__(self, object , get_player_armature = None ):
         
+        self.keys_g = EventeKeysValues()
+
+
         self.fisic_constraints           = bge.constraints.getCharacter( self )
         self.player_armature             =  get_player_armature
    
@@ -46,22 +52,6 @@ class PlayerController(types.KX_GameObject):
         pass
 
 
-    #------------------------------------------------------------------------------------
-    def cameraColision( self , obj_focus , obj_root , obj_cam , prop_name_colision):
-        m       = logic.mouse.events
-        ray     = obj_focus.rayCast( obj_root , obj_focus , obj_focus.getDistanceTo(obj_root), prop_name_colision )
-        #------------------------------
-
-        if ray[0] != None:
-            obj_cam.worldPosition = ray[1]
-            
-
-        if ray[0] == None:
-            obj_cam.worldPosition = obj_root.worldPosition
-    
-        pass
-    
-
     #-----------------------------------------------------------------------------------------
     def setNewValuesActionsDict(self , name_state , dict_new_actions = { "name" : [ "name" , 1 , 2 ] }  ):
         return dict_new_actions[ name_state ]
@@ -81,6 +71,52 @@ class PlayerController(types.KX_GameObject):
         pass
 
 
+    #------------------------------------------------------------------------------------
+    def setMouseAngleAction( self , armature_player , mouse_events  = [ "right_mouse" , "left_mouse" ] , 
+                                    animations_shooter = [ ["fire_shooter"           , 1 , 5 , 8 , 2 ] , 
+                                                           ["pose_static_shooter"    , 1 , 1 , 8 , 3 ] , 
+                                                           ["aim_look_shooter"       , 0 , 0 , 8 , 3 ] , 
+                                                         ]
+                                    ):
+
+        #--------------------------------
+        mouse   = logic.mouse.events
+        tc      = logic.keyboard.events
+        keys    = tc[events.WKEY] or tc[events.SKEY] or tc[events.AKEY] or tc[events.DKEY] 
+        shift   = tc[events.LEFTSHIFTKEY]
+        #--------------------------------
+    
+
+        if self.keys_g[ mouse_events[0] ] :
+            if self.keys_g[ mouse_events[1] ] :
+
+                armature_player.playAction( animations_shooter[0][0] , animations_shooter[0][1] , animations_shooter[0][2] , priority = 8 , layer = 2 )
+            else:
+                armature_player.playAction( animations_shooter[1][0] , animations_shooter[1][1] , animations_shooter[1][2]  , priority = 8 , layer = 2 )
+
+
+            armature_player.playAction( animations_shooter[2][0] , animations_shooter[2][0] , priority = 8 , layer = 3 )
+
+
+        pass
+
+
+    #------------------------------------------------------------------------------------
+    def cameraColision( self , obj_focus , obj_root , obj_cam , prop_name_colision):
+        m       = logic.mouse.events
+        ray     = obj_focus.rayCast( obj_root , obj_focus , obj_focus.getDistanceTo(obj_root), prop_name_colision )
+        #------------------------------
+
+        if ray[0] != None:
+            obj_cam.worldPosition = ray[1]
+            
+        if ray[0] == None:
+            obj_cam.worldPosition = obj_root.worldPosition
+    
+        pass
+
+
+    #------------------------------------------------------------------------------------
     def rayCastPoint( self , point_raycast , vect_x = 0 , vect_y = 0 , vect_z = 0  ):
         scene   = logic.getCurrentScene()
         m       = logic.mouse.events

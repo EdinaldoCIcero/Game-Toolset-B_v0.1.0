@@ -124,8 +124,3 @@ def update(cont):
 
     if tr == False:
         own.playerDirection()
-
-
-
-
-   

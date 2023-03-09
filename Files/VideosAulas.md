@@ -140,17 +140,6 @@
 
 ----
 
-
-
-
-
-
-
-
-
-
-
-
 ## Links
 [Component To BGE 2.79b Original ]( https://github.com/agoose77/bge_python_components )
 
